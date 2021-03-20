@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        
+      body{
+          padding-top: 5px;
+          padding-left: 5px;
+          border-left: 20px;
+          margin: 50px;
+          
+      }
+      table {
+        text-align: center;
+        width: 80%;
+      }
+      
+      .table-scope {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.8);
+        padding: 10px;
+        font-size: 20px;
+        text-align: center;
+        
+      }
+
+      </style>
+    
+      <!--script for rows-->
+      <script>
+          $(document).ready(function()
+          {
+            $('tr').each(function()
+            {
+              var total=0;
+              $(this).find('.a').each(function()
+              {
+                var tot=$(this).text();
+                if(tot.length!==0)
+                {
+                  total+=parseFloat(tot);
+                }
+              });
+              $(this).find('#Total').html(''+total)
+
+            });
+
+          });
+
+      </script>
+
+      <!--script for columns-->
+    <script type="text/javascript">
+        var debugScript = true;
+        
+        function computeTableColumnTotal(tableId, colNumber)
+        {
+          // find the table with id attribute tableId
+          // return the total of the numerical elements in column colNumber
+          // skip the top row (headers) and bottom row (where the total will go)
+                
+          var result = 0;
+                
+          try
+          {
+            var tableElem = window.document.getElementById(tableId); 		   
+            var tableBody = tableElem.getElementsByTagName("tbody").item(0);
+            var i;
+            var howManyRows = tableBody.rows.length;
+            for (i=1; i<(howManyRows-1); i++) // skip first and last row (hence i=1, and howManyRows-1)
+            {
+               var thisTrElem = tableBody.rows[i];
+               var thisTdElem = thisTrElem.cells[colNumber];			
+               var thisTextNode = thisTdElem.childNodes.item(0);
+               if (debugScript)
+               {
+                 // window.alert("text is " + thisTextNode.data);
+               } // end if
+        
+               // try to convert text to numeric
+               var thisNumber = parseFloat(thisTextNode.data);
+               // if you didn't get back the value NaN (i.e. not a number), add into result
+               if (!isNaN(thisNumber))
+                 result += thisNumber;
+             } // end for
+                 
+          } // end try
+          catch (ex)
+          {
+             //window.alert("Exception in function computeTableColumnTotal()\n" + ex);
+             result = 0;
+          }
+          finally
+          {
+             return result;
+          }
+            
+        }
+                
+        function finishTable()
+{
+  if (debugScript)
+    //window.alert("Beginning of function finishTable");
+		
+	var tableElemName = "hikeTable";
+		
+  var totalsun= computeTableColumnTotal("hikeTable",1);
+  var totalmon = computeTableColumnTotal("hikeTable",2);
+  var totaltue = computeTableColumnTotal("hikeTable",3);
+  var totalwed = computeTableColumnTotal("hikeTable",4);
+  var totalthu = computeTableColumnTotal("hikeTable",5);
+  var totalfri = computeTableColumnTotal("hikeTable",6);
+  var totalsat = computeTableColumnTotal("hikeTable",7);
+  var totaltotal = computeTableColumnTotal("hikeTable",8);
+
+	try 
+  {
+    var totalMilesPlannedElem = window.document.getElementById("totalsun");
+    totalMilesPlannedElem.innerHTML = totalsun;
+
+    var totalMilesHikedElem = window.document.getElementById("totalmon");
+    totalMilesHikedElem.innerHTML = totalmon;
+
+    var totalMilesPlannedElem = window.document.getElementById("totaltue");
+    totalMilesPlannedElem.innerHTML = totaltue;
+
+    var totalMilesHikedElem = window.document.getElementById("totalwed");
+    totalMilesHikedElem.innerHTML = totalwed;
+
+    var totalMilesPlannedElem = window.document.getElementById("totalthu");
+    totalMilesPlannedElem.innerHTML = totalthu;
+
+    var totalMilesHikedElem = window.document.getElementById("totalfri");
+    totalMilesHikedElem.innerHTML = totalfri;
+
+    var totalMilesPlannedElem = window.document.getElementById("totalsat");
+    totalMilesPlannedElem.innerHTML = totalsat;
+
+   }
+   catch (ex)
+   {
+     //window.alert("Exception in function finishTable()\n" + ex);
+   }
+
+   return;
+}
+   </script>		
+
+</head>
+<body onload="finishTable();">
+  <script>
+    let year = prompt('Enter the Year', 2021);
+    
+  </script>
+
+    <table id="hikeTable" border="1" style="border-style: hidden;">  
+        <caption>
+
+            <b>Year</b>
+           <b> <span id="year" >
+            <script>
+                  
+              var d = new Date();
+              var n = d.getFullYear();
+              document.getElementById("year").innerHTML = n;
+
+      </script></span></b>
+        
+        </caption>
+        <tbody>
+            <tr>
+              <th scope="col">Day/Date</th>
+              <th scope="col">Sun</th>
+              <th scope="col">Mon</th>
+              <th scope="col">Tue</th>
+              <th scope="col">Wed</th>
+              <th scope="col">Thu</th>
+              <th scope="col">Fri</th>
+              <th scope="col">Sat</th>
+              <th scope="col">Total</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td class="a">2</td>
+              <td class="a">1</td>
+              <td class="a">2</td>
+              <td class="a">3</td>
+              <td class="a">1</td>
+              <td class="a">1</td>
+              <td class="a">2</td>
+              <td id="Total"></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td class="a">2</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td class="a">1</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td class="a">1</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td class="a">0</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>14</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>16</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>17</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>18</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>19</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>20</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>21</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>22</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>23</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>24</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>25</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>26</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>27</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>28</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>29</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>30</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>31</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td class="a">&nbsp;</td>
+                <td id="Total"></td>
+              </tr>
+              <tr>
+                <td>Total</td>
+                <td id="totalsun"></td>
+                <td id="totalmon"></td>
+                <td id="totaltue"></td>
+                <td id="totalwed"></td>
+                <td id="totalthu"></td>
+                <td id="totalfri"></td>
+                <td id="totalsat"></td>
+                <td id="Total"></td>
+              </tr>
+
+        </tbody>
+        </table>
+
+</body>
+</html>
